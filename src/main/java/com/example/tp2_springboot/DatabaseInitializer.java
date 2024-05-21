@@ -13,5 +13,8 @@ public class DatabaseInitializer {
     public DatabaseInitializer(ProdutosService produtosService) {
         this.produtosService = produtosService;
         produtosService.criarTabela();
+        produtosService.cargaDados();
     }
+
+
 }

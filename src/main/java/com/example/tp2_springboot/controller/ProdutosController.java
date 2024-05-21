@@ -22,12 +22,36 @@ public class ProdutosController {
     @PostMapping("/inserir")
     public String Inserir(@RequestBody Produtos produto){
         produtoService.inserirProduto(produto);
-        System.out.println(produto.getNome());
         return "item inserido";
     }
 
     @GetMapping("/listarTodos")
     public List<Produtos> ListarTodos(){
         return produtoService.listarTodos();
+    }
+
+    @GetMapping("/listarId/{id}")
+    public Produtos ListarId(@PathVariable int id){
+        return produtoService.listarId(id);
+    }
+
+    @PutMapping("/modificar/{id}")
+    public String Modificar(@PathVariable int id, @RequestBody Produtos produto){
+        if(produtoService.modificar(id, produto)){
+            return "Produto alterado com sucesso!";
+        }
+        else{
+            return "Produto não pode ser alterado!";
+        }
+    }
+
+    @DeleteMapping("deletar/{id}")
+    public String Deletar(@PathVariable int id){
+        if(produtoService.deletar(id)){
+            return "Produto deletado com sucesso!";
+        }
+        else{
+            return "Produto não pode ser deletado!";
+        }
     }
 }

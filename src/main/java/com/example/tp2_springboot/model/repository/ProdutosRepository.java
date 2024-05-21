@@ -61,4 +61,46 @@ public class ProdutosRepository {
         });
         return produtos;
     }
+
+    public Produtos listarId(int id){
+        String sql = "SELECT * FROM produtos WHERE id =" + id;
+            Produtos produtos = jdbcTemplate.queryForObject(sql, (ResultSet rs, int rowNum) -> {
+            Produtos produto = new Produtos();
+            produto.setId(rs.getInt("id"));
+            produto.setNome(rs.getString("nome"));
+            produto.setDescricao(rs.getString("descricao"));
+            produto.setQuantidade(rs.getInt("quantidade"));
+            produto.setValor(rs.getDouble("valor"));
+            produto.setBloqueado(rs.getBoolean("bloqueado"));
+            return produto;
+        });
+        return produtos;
+    }
+
+    public void cargaDados(Produtos produto) {
+        String sql = "INSERT INTO produtos (nome, descricao, quantidade, valor, bloqueado) VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, produto.getNome(), produto.getDescricao(), produto.getQuantidade(), produto.getValor(), produto.isBloqueado());
+    }
+
+    public boolean modificar(int id,Produtos produto) {
+        try{
+            String sql = "UPDATE produtos SET nome = ?, descricao = ?, quantidade = ?, valor = ?, bloqueado = ? WHERE id = ?";
+            jdbcTemplate.update(sql, produto.getNome(), produto.getDescricao(), produto.getQuantidade(), produto.getValor(), produto.isBloqueado(), id);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
+
+    public boolean deletar(int id){
+        try{
+            String sql = "DELETE FROM produtos WHERE id = ?";
+            jdbcTemplate.update(sql, id);
+            return true;
+        }
+        catch (Exception e){
+            return false;
+        }
+    }
 }
